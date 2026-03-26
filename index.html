@@ -291,7 +291,10 @@ mc.innerHTML=h;var c=document.getElementById("vC");
 if(vT==="resumo")vRes(c);else if(vT==="kanban")vKb(c);else if(vT==="agenda")vAg(c);else if(vT==="analytics")vAn(c);else vTl(c)}
 window.svT=function(t){vT=t;rPg()};
 function vRes(c){var a=gA(),t=a.length,p=0,g=0,d=0;a.forEach(function(x){if(x.st==="pendente")p++;else if(x.st==="andamento")g++;else d++});
-var h='<div class="Su"><div class="Sc"><div class="v" style="color:var(--d)">'+t+'</div><div class="l">Total</div></div><div class="Sc"><div class="v" style="color:var(--wt)">'+p+'</div><div class="l">Pendentes</div></div><div class="Sc"><div class="v" style="color:var(--b)">'+g+'</div><div class="l">Andamento</div></div><div class="Sc"><div class="v" style="color:var(--st)">'+d+'</div><div class="l">Concluidos</div></div></div>';
+function pDg(d2){var x=d2.split("/");return x.length===3?new Date(+x[2],+x[1]-1,+x[0]):new Date(2026,+x[1]-1,+x[0])}
+var tdg=new Date();tdg.setHours(0,0,0,0);var ov=a.filter(function(x){return x.st!=="concluido"&&pDg(x.dt)<tdg}).length;
+var h='<div class="Su"><div class="Sc" style="cursor:pointer" onclick="svT(\'kanban\');kbFilter=\'\'" title="Ver todas"><div class="v" style="color:var(--d)">'+t+'</div><div class="l">Total</div></div><div class="Sc" style="cursor:pointer" onclick="svT(\'kanban\');kbFilter=\'\'" title="Ver pendentes no Kanban"><div class="v" style="color:var(--wt)">'+p+'</div><div class="l">Pendentes</div></div><div class="Sc" style="cursor:pointer" onclick="svT(\'kanban\');kbFilter=\'\'" title="Ver andamento no Kanban"><div class="v" style="color:var(--b)">'+g+'</div><div class="l">Andamento</div></div><div class="Sc" style="cursor:pointer" onclick="svT(\'kanban\');kbFilter=\'\'" title="Ver conclu\u00eddos no Kanban"><div class="v" style="color:var(--st)">'+d+'</div><div class="l">Concluidos</div></div></div>';
+if(ov)h+='<div style="text-align:center;margin:-10px 0 12px"><button class="B" style="font-size:.58rem;padding:3px 10px;background:var(--eb);color:var(--et);border-color:var(--ed);cursor:pointer" onclick="svT(\'agenda\')">\u26a0 '+ov+' tarefa'+(ov>1?"s":"")+" atrasada"+(ov>1?"s":"")+' \u2192 ver agenda</button></div>';
 h+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:7px">';
 D.P.forEach(function(p){var ct=0,pe=0;p.B.forEach(function(b){ct+=b.it.length;b.it.forEach(function(x){if(x.st==="pendente")pe++})});
 h+='<div class="Sc" style="cursor:pointer;text-align:left;padding:11px 14px" onclick="sP(\''+p.id+'\')"><div style="display:flex;align-items:center;gap:5px;margin-bottom:4px"><span style="font-size:14px;color:'+p.co+'">'+p.ic+'</span><span style="font-family:var(--fh);font-weight:700;font-size:.7rem;color:var(--d)">'+p.nm+'</span></div><div style="font-size:.58rem;color:var(--g4)">'+ct+' \u00b7 '+pe+' pend.</div></div>'});
@@ -318,13 +321,22 @@ if(!cols[col.k].length)h+='<div class="Es" style="padding:16px"><svg viewBox="0 
 h+='</div>'});h+='</div>';c.innerHTML=h}
 window.kDrop=function(e,st){e.preventDefault();e.currentTarget.style.outline="none";var d=e.dataTransfer.getData("text/plain").split("|");if(d.length<3)return;var pjN=d[0],bkN=d[1],tid=d[2];
 D.P.forEach(function(p){if(p.nm===pjN)p.B.forEach(function(b){if(b.nm===bkN)b.it.forEach(function(x){if(x.id===tid)x.st=st})})});sv();rSb();rPg();toast("\u2713 "+st)};
-function vAg(c){var a=gA(),bd={};a.forEach(function(x){if(!bd[x.dt])bd[x.dt]=[];bd[x.dt].push(x)});
+var agMode="data";
+function vAg(c){var a=gA();
 function pD(d){var x=d.split("/");return x.length===3?new Date(+x[2],+x[1]-1,+x[0]):new Date(2026,+x[1]-1,+x[0])}
-var ds=Object.keys(bd).sort(function(a,b){return pD(a)-pD(b)});var td=new Date();td.setHours(0,0,0,0);
-var dc={pendente:"var(--wd)",andamento:"var(--id)",concluido:"var(--sd)"};var h="";
+var td=new Date();td.setHours(0,0,0,0);
+var dc={pendente:"var(--wd)",andamento:"var(--id)",concluido:"var(--sd)"};
+var h='<div style="display:flex;gap:5px;margin-bottom:10px"><button class="B '+(agMode==="data"?"Bp":"Bg")+'" style="font-size:.58rem;padding:3px 8px" onclick="agMode=\'data\';rPg()">Por Data</button><button class="B '+(agMode==="resp"?"Bp":"Bg")+'" style="font-size:.58rem;padding:3px 8px" onclick="agMode=\'resp\';rPg()">Por Respons\u00e1vel</button></div>';
+if(agMode==="resp"){var br={};a.forEach(function(x){if(!br[x.rs])br[x.rs]=[];br[x.rs].push(x)});
+var rks=Object.keys(br).sort();
+rks.forEach(function(rs){var items=br[rs],pe=0,ov=0;items.forEach(function(x){if(x.st==="pendente")pe++;if(x.st!=="concluido"&&pD(x.dt)<td)ov++});
+h+='<div class="Ag"><div class="Ah">\u263a '+rs+'<span style="font-size:.52rem;color:var(--g4);font-weight:600;margin-left:8px">'+items.length+' tarefa'+(items.length>1?"s":"")+'</span>'+(pe?'<span style="font-size:.52rem;color:var(--wt);font-weight:600;margin-left:6px">'+pe+' pend</span>':'')+(ov?'<span style="font-size:.52rem;color:var(--et);font-weight:600;margin-left:6px">'+ov+' atrasada'+(ov>1?"s":"")+'</span>':'')+'</div>';
+items.forEach(function(x){var isP=x.st!=="concluido"&&pD(x.dt)<td;h+='<div class="Ae"'+(isP?' style="border-left:3px solid var(--ed)"':'')+' ><div class="Ad" style="background:'+dc[x.st]+'"></div><span class="t">'+x.tx+'</span><span style="font-size:.52rem;color:'+(isP?"var(--et)":"var(--g4)")+'" >'+x.dt+'</span><span class="p">'+x.pj+'</span></div>'});
+h+='</div>'})}else{var bd={};a.forEach(function(x){if(!bd[x.dt])bd[x.dt]=[];bd[x.dt].push(x)});
+var ds=Object.keys(bd).sort(function(a2,b){return pD(a2)-pD(b)});
 ds.forEach(function(d){var dt=pD(d),isT=dt.getTime()===td.getTime(),isP=dt<td;
 h+='<div class="Ag"><div class="Ah">'+d+(isT?'<span class="At">HOJE</span>':"")+(isP&&!isT?'<span style="font-size:.52rem;color:var(--et);font-weight:600;margin-left:6px">ATRASADO</span>':"")+"</div>";
-bd[d].forEach(function(x){h+='<div class="Ae"><div class="Ad" style="background:'+dc[x.st]+'"></div><span class="t">'+x.tx+'</span><span class="r">'+x.rs+'</span><span class="p">'+x.pj+'</span></div>'});h+='</div>'});
+bd[d].forEach(function(x){h+='<div class="Ae"><div class="Ad" style="background:'+dc[x.st]+'"></div><span class="t">'+x.tx+'</span><span class="r">'+x.rs+'</span><span class="p">'+x.pj+'</span></div>'});h+='</div>'})}
 c.innerHTML=h||'<div class="Nn">Vazio.</div>'}
 function vTl(c){
 function pD(d){var x=d.split("/");return x.length===3?new Date(+x[2],+x[1]-1,+x[0]):new Date(2026,+x[1]-1,+x[0])}
@@ -382,8 +394,9 @@ function rBl(p,bi,mc){var b=p.B[bi];
 var h='<div class="Ph"><div><h1><span style="color:'+b.co+'">'+b.ic+'</span> '+b.nm+'</h1><div class="s">'+p.nm+' \u00b7 '+b.it.length+'</div></div><div style="display:flex;gap:5px"><button class="B Bg" onclick="aBl()">+ Bloco</button></div></div>';
 h+='<div class="Bk"><div class="Bh"><span style="color:'+b.co+'">'+b.ic+'</span><span class="Bt">'+b.nm+'</span><span class="Bc">'+b.it.length+'</span></div><div>';
 b.it.forEach(function(x,ii){var nc=x.nt?x.nt.length:0;var sd=x.dt.replace("/2026","");var dp=x.dep||"";
+if(!x.sub)x.sub=[];var subT=x.sub.length,subD=0;x.sub.forEach(function(s){if(s.ck)subD++});var subPct=subT?Math.round((subD/subT)*100):0;
 var isBlocked=false;if(dp){b.it.forEach(function(y){if(y.id===dp&&y.st!=="concluido")isBlocked=true})}
-h+='<div class="R"'+(isBlocked?' style="opacity:.6"':'')+' ><span class="Ri">'+x.id+'</span>';
+h+='<div class="R"'+(isBlocked?' style="opacity:.6"':'')+' ><span class="Ri">'+x.id+(subT?'<div style="display:flex;align-items:center;gap:2px;margin-top:2px"><div style="width:22px;height:3px;background:var(--g2);border-radius:2px;overflow:hidden"><div style="height:100%;width:'+subPct+'%;background:'+(subPct===100?"var(--sd)":"var(--bm)")+';border-radius:2px"></div></div><span style="font-size:.45rem;color:'+(subPct===100?"var(--st)":"var(--g4)")+'">'+subD+'/'+subT+'</span></div>':'')+'</span>';
 h+='<span class="Rx" contenteditable="false" ondblclick="sE(this)" onblur="eE(this,'+bi+','+ii+',\'tx\')" onkeydown="if(event.key===\'Enter\'){event.preventDefault();this.blur()}">'+x.tx+'</span>';
 h+='<span class="Rr" contenteditable="false" ondblclick="sE(this)" onblur="eE(this,'+bi+','+ii+',\'rs\')" onkeydown="if(event.key===\'Enter\'){event.preventDefault();this.blur()}">'+x.rs+'</span>';
 h+='<span class="Rd" contenteditable="false" ondblclick="sE(this)" onblur="eE(this,'+bi+','+ii+',\'dt\')" onkeydown="if(event.key===\'Enter\'){event.preventDefault();this.blur()}">'+sd+'</span>';
