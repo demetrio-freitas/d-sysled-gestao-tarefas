@@ -141,12 +141,48 @@
 .Sy button{font-size:.58rem}
 .Sy .lnk{flex:1;padding:4px 7px;border:1px solid var(--g2);border-radius:6px;font-size:.58rem;font-family:var(--fb);color:var(--g4);background:var(--g1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ub{position:fixed;bottom:18px;left:calc(var(--sw) + 12px);padding:5px 10px;background:var(--g6);color:var(--w);border-radius:6px;font-family:var(--fh);font-size:.6rem;font-weight:600;z-index:200;cursor:pointer;display:none;animation:ntIn .2s ease}.ub:hover{background:var(--d)}
-@media(max-width:860px){.S{transform:translateX(-100%)}.S.open{transform:translateX(0)}.So.open{display:block}.H{display:block}.M{margin-left:0}.R{grid-template-columns:1fr;gap:2px;padding:7px 10px}.Su{grid-template-columns:repeat(2,1fr)}.Kb{grid-template-columns:1fr}}
+/* OPT1: DARK MODE */
+html.dark{--d:#F1F5F9;--t:#E2E8F0;--g6:#94A3B8;--g4:#64748B;--g2:#334155;--g1:#0F172A;--w:#1E293B;--sb:#064E3B;--st:#6EE7B7;--wb:#78350F;--wt:#FCD34D;--ib:#1E3A5F;--it:#93C5FD;--eb:#7F1D1D;--et:#FCA5A5}
+html.dark .Sl{background:linear-gradient(135deg,var(--bl),#1D4ED8)}
+html.dark .O .Ob{box-shadow:0 12px 40px rgba(0,0,0,.5)}
+html.dark .Ss{background:var(--w);color:var(--t)}
+.dm{background:none;border:1px solid var(--g2);border-radius:6px;padding:3px 7px;cursor:pointer;font-size:12px;color:var(--g4);transition:all .2s}.dm:hover{border-color:var(--bm);color:var(--bm)}
+/* OPT2: PROGRESS BAR */
+.pb{height:3px;background:var(--g2);border-radius:2px;margin:4px 12px 0;overflow:hidden}.pb .pf{height:100%;border-radius:2px;transition:width .4s ease}
+/* OPT3: TRANSITIONS */
+.M .A{animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.Bk,.Sc,.Ki,.Ae,.Re,.Kc{transition:transform .15s ease,box-shadow .15s ease}
+.Bk:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.Ki:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.B{transition:all .15s ease}.B:active{transform:scale(.97)}
+.Bp:hover{filter:brightness(1.1)}.Bs:hover{background:rgba(43,108,176,.05)}
+.R{transition:background .1s ease}
+.O .Ob{animation:modalIn .2s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+/* OPT4: EMPTY STATE */
+.Es{text-align:center;padding:30px 20px;color:var(--g4)}
+.Es svg{width:48px;height:48px;margin-bottom:10px;opacity:.4}
+.Es .et{font-family:var(--fh);font-size:.75rem;font-weight:700;color:var(--g6);margin-bottom:4px}
+.Es .em{font-size:.65rem;margin-bottom:10px}
+/* OPT5: MOBILE CARDS */
+@media(max-width:860px){.S{transform:translateX(-100%)}.S.open{transform:translateX(0)}.So.open{display:block}.H{display:block}.M{margin-left:0}.Su{grid-template-columns:repeat(2,1fr)}.Kb{grid-template-columns:1fr}
+.R{display:flex;flex-direction:column;gap:4px;padding:10px 14px;border-bottom:1px solid var(--g2);position:relative}
+.R .Ri{position:absolute;top:10px;right:14px;font-size:.55rem}
+.R .Rx{font-size:.78rem;font-weight:600}
+.R .Rr,.R .Rd{font-size:.65rem;text-align:left}
+.R .Ss{width:auto;max-width:100px}
+.R .Rb,.R .Rm{position:absolute;top:10px;right:38px}
+.R .Rm{right:58px}
+.ub{left:12px}
+.Ph{flex-direction:column;align-items:flex-start}
+.Vt{flex-wrap:wrap}.Vb{flex:none;padding:6px 12px}
+}
 </style>
 </head>
 <body>
 <button class="H" onclick="tSb()">&#9776;</button><div class="So" id="sO" onclick="tSb()"></div>
-<div class="L"><aside class="S" id="sb"><div class="Sb"><div class="Sl">S</div><h2>SYSLED<small>Gest&#227;o de Tarefas</small></h2></div><nav class="Sn" id="sN"></nav><div class="Sf"><button class="B Bs" style="width:100%;font-size:.65rem" onclick="oAP()">+ Novo Projeto</button></div><div class="Sy"><button class="B Bg" style="font-size:.56rem;padding:.3rem .6rem" onclick="shareLink()" title="Copiar link de compartilhamento">&#128279; Compartilhar</button><button class="B Bg" style="font-size:.56rem;padding:.3rem .6rem" onclick="importLink()" title="Importar dados de link">&#8595; Importar</button></div></aside><div class="M"><div class="A" id="mc"></div></div></div>
+<div class="L"><aside class="S" id="sb"><div class="Sb"><div class="Sl">S</div><h2>SYSLED<small>Gest&#227;o de Tarefas</small></h2><button class="dm" id="dmBtn" onclick="toggleDark()" title="Tema">&#9790;</button></div><nav class="Sn" id="sN"></nav><div class="Sf"><button class="B Bs" style="width:100%;font-size:.65rem" onclick="oAP()">+ Novo Projeto</button></div><div class="Sy"><button class="B Bg" style="font-size:.56rem;padding:.3rem .6rem" onclick="shareLink()" title="Copiar link de compartilhamento">&#128279; Compartilhar</button><button class="B Bg" style="font-size:.56rem;padding:.3rem .6rem" onclick="importLink()" title="Importar dados de link">&#8595; Importar</button></div></aside><div class="M"><div class="A" id="mc"></div></div></div>
 <div class="O" id="nM"><div class="Ob" style="width:440px"><div class="Oh"><div><h3 id="nT"></h3><div class="s" id="nS"></div></div><button class="Oc" onclick="cN()">&#10005;</button></div><div class="Od" id="nB"></div><div class="Of"><textarea class="Ni" id="nI" placeholder="Nota..."></textarea><button class="B Bp" style="font-size:.62rem" onclick="aN()">Salvar</button></div></div></div>
 <div class="O" id="aM"><div class="Ob" style="width:340px"><div class="Oh"><div><h3>Novo Projeto</h3></div><button class="Oc" onclick="cAP()">&#10005;</button></div><div class="Od"><label class="Il">Nome</label><input class="If" id="pN"><label class="Il">Cor</label><input class="If" id="pC" placeholder="#2B6CB0" style="width:120px"></div><div class="Of"><button class="B Bp" onclick="crP()">Criar</button></div></div></div>
 <div class="O" id="mM"><div class="Ob" style="width:360px"><div class="Oh"><div><h3 id="mT">Mover</h3><div class="s" id="mS"></div></div><button class="Oc" onclick="cMv()">&#10005;</button></div><div class="Od" id="mL"></div></div></div>
@@ -349,6 +385,37 @@ rBl=function(p,bi,mc){_rBl(p,bi,mc);
 mc.querySelectorAll(".Rx,.Rr,.Rd").forEach(function(el){
 el.removeAttribute("ondblclick");
 el.onclick=function(){if(el.contentEditable==="true")return;sE(el)}})};
+
+/* === OPT1: DARK MODE JS === */
+window.toggleDark=function(){var h=document.documentElement;h.classList.toggle("dark");var isDark=h.classList.contains("dark");localStorage.setItem("sysled_dark",isDark?"1":"0");document.getElementById("dmBtn").textContent=isDark?"\u2600":"\u263D"};
+(function(){if(localStorage.getItem("sysled_dark")==="1"){document.documentElement.classList.add("dark");document.getElementById("dmBtn").textContent="\u2600"}})();
+
+/* === OPT2: PROGRESS BARS IN SIDEBAR === */
+var _rSbOrig2=rSb;
+rSb=function(){_rSbOrig2();
+document.querySelectorAll("#sN .Si").forEach(function(el){
+var oc=el.getAttribute("onclick");if(!oc)return;
+var m=oc.match(/sP\('([^']+)'\)/);if(!m||m[1]==="visao-geral")return;
+var p=gP(m[1]);if(!p)return;
+var total=0,done=0;p.B.forEach(function(b){b.it.forEach(function(x){total++;if(x.st==="concluido")done++})});
+if(total===0)return;
+var pct=Math.round((done/total)*100);
+var bar=document.createElement("div");bar.className="pb";
+var fill=document.createElement("div");fill.className="pf";
+fill.style.width=pct+"%";
+fill.style.background=pct===100?"var(--sd)":pct>50?"var(--bm)":"var(--wd)";
+bar.appendChild(fill);
+el.parentNode.insertBefore(bar,el.nextSibling)})};
+
+/* === OPT4: EMPTY STATES === */
+var _rBlOrig2=rBl;
+rBl=function(p,bi,mc){_rBlOrig2(p,bi,mc);
+if(p.B[bi].it.length===0){
+var bk=mc.querySelector(".Bk > div:last-child");if(!bk)return;
+var aa=bk.querySelector(".Aa");
+var es=document.createElement("div");es.className="Es";
+es.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg><div class="et">Nenhuma tarefa ainda</div><div class="em">Use o campo abaixo para adicionar a primeira a\u00e7\u00e3o</div>';
+if(aa)bk.insertBefore(es,aa);else bk.appendChild(es)}};
 
 var _rPg=rPg;rPg=function(){_rPg();var mc=document.getElementById("mc");injectSearch(mc);injectExport(mc)};
 ld();rSb();rPg();checkDeadlines();
